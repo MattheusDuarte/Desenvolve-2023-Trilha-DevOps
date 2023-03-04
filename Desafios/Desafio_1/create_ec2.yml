@@ -1,0 +1,98 @@
+---
+- name: Create Free Tier EC2 Instance
+  hosts: localhost
+  connection: local
+  gather_facts: False
+  
+  vars:
+    region: us-east-1
+    image: "ami-09cd747c78a9add63" # ubuntu 20.04 LTS
+    id: "ec2-ansible-ngix"
+    sec_group: "${{ id }}-sec"
+    profile_key: default
+    instance_type: t2.micro
+  
+    
+  tasks:
+    - name: Upload public key to AWS
+      ec2_key:
+        name: "{{id}}_key"
+        key_material: "{{lookup('file', '/home/matheusduarte/.ssh/id_rsa.pub')}}"
+
+    - name: "create security group" 
+      ec2_group:
+        name: "{{id}}"
+        description: "Security group for instance ec2 {{id}}"
+        region: "{{ region }}"
+        rules:
+          - proto: tcp
+            from_port: 22
+            to_port: 22
+            cidr_ip: 0.0.0.0/0
+            rule_desc: allow all on ssh port
+
+          - proto: tcp
+            from_port: 80
+            to_port: 80
+            cidr_ip: 0.0.0.0/0
+            rule_desc: allow all http  port
+        rules_egress:
+          - proto: tcp
+            from_port: 80
+            to_port: 80
+            cidr_ip: 0.0.0.0/0
+            group_desc: other create security group
+      register: sec_group_id
+
+    - name: "provision an EC2 instance"
+      ec2_instance:
+        key_name: "{{id}}_key"
+        id: "{{id}}"
+        image: "{{image}}"
+        instance_type: "{{instance_type}}"
+        region: "{{ region }}"
+        security_group: "{{sec_group_id.group_id}}"
+        network:
+          assing_public_ip: true
+        tags:
+          Enviroment: Testing
+        wait: true
+      register: instance_ec2
+
+    - name: Add all instance public IPs to host group
+      add_host: hostname={{item.public_ip }} groups=ec2hosts
+      loop: "{{ instance_ec2.instances }}"
+
+    # - name: 'Instalar todas as dependencias'
+    #   become: true
+    #   apt:
+    #     name: "{{ item }}"
+    #     state: present
+    #   with_items:
+    #       - nginx
+
+  #  - name: 'Instalar todas as dependencias'
+  #    apt:
+  #      name: "{{ item }}"
+  #      state: latest
+  #    become: yes
+  #    with_items:
+  #        - nginx
+
+    # - name: 'Reiniciar Nginx service'
+    #   shell: '/etc/init.d/nginx start'
+    #   become: yes 
+  
+  #  - name: 'Renderizar template'
+  #    template:
+  #      src: "{{ template_file }}"
+  #      dest: "{{ dest_file }}"
+  #    become: yes
+  
+    # - name: 'Reiniciar Nginx service'
+    #   shell: '/etc/init.d/nginx restart'
+    #   become: yes
+
+    - name: 'Sainda de informações da instancia'
+      debug:
+        var: ec2
