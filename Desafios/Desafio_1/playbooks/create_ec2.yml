@@ -63,7 +63,3 @@
     - name: Print all instances
       debug:
         var: instance_ec2
-
-    - name: 'Add all instance public IPs to host group'
-      add_host: hostname={{ item.instance_id }} groups=ec2hosts
-      loop: "{{ instance_ec2.instances }}"

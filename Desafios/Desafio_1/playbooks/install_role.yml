@@ -1,5 +1,8 @@
 - name: provision resources 
   hosts: all
   become: true
-  roles:
-    - nginx
+  
+  tasks:
+    - name: update cache
+      apt:
+        update_cache: yes
