@@ -9,17 +9,12 @@
     name: "ec2-ansible-ngix"
     sec_group: "${{ name }}-sec"
     instance_type: t2.micro
-    keypair: ec2-ansible-ngix_key
+    keypair: Teste_ansible
     image:
       id: ami-0557a15b87f6559cf	
   
     
   tasks:
-    - name: Upload public key to AWS
-      ec2_key:
-        name: "{{name}}_key"
-        key_material: "{{lookup('file', '/home/matheusduarte/.ssh/id_rsa.pub')}}"
-
     - name: "create security group" 
       ec2_group:
         name: "{{name}}"
@@ -47,7 +42,7 @@
 
     - name: "provision an EC2 instance"
       ec2_instance:
-        key_name: "{{name}}_key"
+        key_name: "{{keypair}}"
         name: "{{name}}"
         image: "{{image}}"
         instance_type: "{{instance_type}}"
