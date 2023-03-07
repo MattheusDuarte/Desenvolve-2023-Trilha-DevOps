@@ -9,7 +9,7 @@
        ec2_instance_info:
          region: "{{ region }}"
        register: ec2_info
-
+       
      - name: Print all instances
        debug:
          var: ec2_info.instances

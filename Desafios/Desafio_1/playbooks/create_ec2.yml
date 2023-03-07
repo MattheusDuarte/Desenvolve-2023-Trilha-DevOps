@@ -6,23 +6,24 @@
   
   vars:
     region: us-east-1
-    image: "ami-09cd747c78a9add63" # ubuntu 20.04 LTS
-    id: "ec2-ansible-ngix"
-    sec_group: "${{ id }}-sec"
-    profile_key: default
+    name: "ec2-ansible-ngix"
+    sec_group: "${{ name }}-sec"
     instance_type: t2.micro
+    keypair: ec2-ansible-ngix_key
+    image:
+      id: ami-0557a15b87f6559cf	
   
     
   tasks:
     - name: Upload public key to AWS
       ec2_key:
-        name: "{{id}}_key"
+        name: "{{name}}_key"
         key_material: "{{lookup('file', '/home/matheusduarte/.ssh/id_rsa.pub')}}"
 
     - name: "create security group" 
       ec2_group:
-        name: "{{id}}"
-        description: "Security group for instance ec2 {{id}}"
+        name: "{{name}}"
+        description: "Security group for instance ec2 {{name}}"
         region: "{{ region }}"
         rules:
           - proto: tcp
@@ -46,8 +47,8 @@
 
     - name: "provision an EC2 instance"
       ec2_instance:
-        key_name: "{{id}}_key"
-        id: "{{id}}"
+        key_name: "{{name}}_key"
+        name: "{{name}}"
         image: "{{image}}"
         instance_type: "{{instance_type}}"
         region: "{{ region }}"
@@ -55,44 +56,14 @@
         network:
           assing_public_ip: true
         tags:
-          Enviroment: Testing
+          Environment: Testing
         wait: true
       register: instance_ec2
 
-    - name: Add all instance public IPs to host group
-      add_host: hostname={{item.public_ip }} groups=ec2hosts
-      loop: "{{ instance_ec2.instances }}"
-
-    # - name: 'Instalar todas as dependencias'
-    #   become: true
-    #   apt:
-    #     name: "{{ item }}"
-    #     state: present
-    #   with_items:
-    #       - nginx
-
-  #  - name: 'Instalar todas as dependencias'
-  #    apt:
-  #      name: "{{ item }}"
-  #      state: latest
-  #    become: yes
-  #    with_items:
-  #        - nginx
-
-    # - name: 'Reiniciar Nginx service'
-    #   shell: '/etc/init.d/nginx start'
-    #   become: yes 
-  
-  #  - name: 'Renderizar template'
-  #    template:
-  #      src: "{{ template_file }}"
-  #      dest: "{{ dest_file }}"
-  #    become: yes
-  
-    # - name: 'Reiniciar Nginx service'
-    #   shell: '/etc/init.d/nginx restart'
-    #   become: yes
-
-    - name: 'Sainda de informações da instancia'
+    - name: Print all instances
       debug:
-        var: ec2
+        var: instance_ec2
+
+    - name: 'Add all instance public IPs to host group'
+      add_host: hostname={{ item.instance_id }} groups=ec2hosts
+      loop: "{{ instance_ec2.instances }}"

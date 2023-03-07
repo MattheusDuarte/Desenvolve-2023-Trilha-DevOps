@@ -1,0 +1,5 @@
+- name: provision resources 
+  hosts: all
+  become: true
+  roles:
+    - nginx
