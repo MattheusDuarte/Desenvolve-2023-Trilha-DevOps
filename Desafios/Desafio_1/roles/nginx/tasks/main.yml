@@ -6,3 +6,13 @@
 - name: Install nginx
   apt:
     name: nginx
+  notify: 
+    - Start_enable_nginx
+
+- name: copy index.js
+  copy: 
+    src: index.j2
+    dest: /usr/share/nginx/html/index.j2
+  notify: 
+    - restart_nginx
+

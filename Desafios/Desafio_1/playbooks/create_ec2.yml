@@ -9,12 +9,13 @@
     name: "ec2-ansible-ngix"
     sec_group: "${{ name }}-sec"
     instance_type: t2.micro
-    keypair: Teste_ansible
+    keypair: Teste-Ansible
     image:
       id: ami-0557a15b87f6559cf	
   
     
   tasks:
+  
     - name: "create security group" 
       ec2_group:
         name: "{{name}}"
