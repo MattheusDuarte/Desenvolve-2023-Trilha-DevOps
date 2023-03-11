@@ -6,13 +6,16 @@
 - name: Install nginx
   apt:
     name: nginx
+    state: latest
   notify: 
     - Start_enable_nginx
 
-- name: copy index.js
-  copy: 
-    src: index.j2
-    dest: /usr/share/nginx/html/index.j2
-  notify: 
-    - restart_nginx
-
+- name: Configure index.html
+  template: 
+    src: index.html.j2 
+    dest: /var/www/html/index.html 
+    owner: root 
+    group: root 
+    mode: 0644 
+  become: True 
+  notify: restart_nginx
