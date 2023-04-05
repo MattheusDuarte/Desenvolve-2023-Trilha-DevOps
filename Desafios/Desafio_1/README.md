@@ -14,14 +14,14 @@
 
 1. Criação da instância:
 
-    'ansible-playbook playbooks/create_ec2.yml'
+    `ansible-playbook playbooks/create_ec2.yml`
 
 2. Criação e teste do inventário dinâmico:
 
-    'ansible-inventory -i inventory/aws_ec2.yml'
+    `ansible-inventory -i inventory/aws_ec2.yml`
 
-    'ansible -m ping -i inventory/aws_ec2'
+    `ansible -m ping -i inventory/aws_ec2`
 
 3. Execução do playbook:
 
-    'ansible-playbook playbooks/install_nginx.yml -i inventory/aws_ec2.yml'
+    `ansible-playbook playbooks/install_nginx.yml -i inventory/aws_ec2.yml`
