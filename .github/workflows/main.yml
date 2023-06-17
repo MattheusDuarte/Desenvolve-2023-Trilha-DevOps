@@ -1,0 +1,31 @@
+name: Docker Image CI
+
+on:
+  push:
+    paths:
+      - 'Desenvolve-2023-Trilha-DevOps/Desafios/Desafio_2/**'
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Docker Login
+      uses: docker/login-action@v2.2.0
+      with:
+        username: ${{ secrets.LOGIN_DOCKER_HUB }}
+        password: ${{ secrets.PASSWORD_DOCKER_HUB }}
+    
+    - name: Build and push Docker images
+      uses: docker/build-push-action@v4.1.1
+      with:
+        context: Desafios/Desafio_2/day-1/task-1/docker
+        file: Desafios/Desafio_2/day-1/task-1/docker/Dockerfile
+        # Push is a shorthand for --output=type=registry
+        push: true
+        # List of tags
+        tags: ${{ secrets.LOGIN_DOCKER_HUB }}/nginx_index:latest
