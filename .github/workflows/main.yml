@@ -3,7 +3,7 @@ name: Create Docker Image CI
 on:
   push:
     paths:
-      - 'Desenvolve-2023-Trilha-DevOps/Desafios/Desafio_2/**'
+      - 'Desafios/Desafio_2/**'
 
 jobs:
 
