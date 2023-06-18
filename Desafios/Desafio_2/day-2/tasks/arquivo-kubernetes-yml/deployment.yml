@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-html-deployment
+  labels:
+    app: nginx-html
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nginx-html
+  template:
+    metadata:
+      labels:
+        app: nginx-html
+    spec:
+      containers:
+      - name: nginx-html
+        image: mattheuduartess/nginx_index:latest
+        resources:
+          limits:
+            cpu: "500m"
+        ports:
+        - containerPort: 80
