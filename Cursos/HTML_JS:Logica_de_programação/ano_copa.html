@@ -1,0 +1,32 @@
+<meta charset="UTF-8">
+
+<script>
+
+    function pulaLinha() {
+
+        document.write("<br>");
+        document.write("<br>");
+    }
+
+    function mostra(frase) {
+
+        document.write(frase);
+        pulaLinha();
+    }       
+
+    function mostrarCopas(anoCopa, anoAtual){
+        
+        mostra("teve copa nos anos: ")
+        //Condição de repetição com while
+        while(anoCopa <= anoAtual){
+            mostra(anoCopa + "\n" )
+            anoCopa += 4
+        }
+    }
+    
+    var anoCopa = 1930;
+    var anoAtual = parseInt(prompt("Qual o ano atual ?"));
+
+    mostrarCopas(anoCopa, anoAtual)
+
+</script>

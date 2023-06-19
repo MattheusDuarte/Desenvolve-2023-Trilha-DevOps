@@ -1,0 +1,51 @@
+<meta charset="UTF-8">
+
+<input/>
+<button>Número desconhecido</button>
+
+<script>
+    
+    function verifica(){
+
+        if (segredos.find(Element => Element == inputBox.value)){
+        
+            alert("você acertou !!!");
+    
+        }else{
+
+            alert("você errou !!!")
+        }
+        inputBox.value = "";
+        inputBox.focus();
+    }
+
+    function sorteiNumeros(num){
+        
+        var arrayAux = []
+        var i = 0
+
+        while (i <= num) {
+
+            var aux = Math.round( Math.random()*10 )
+            
+            if(aux != 0){
+                if(!arrayAux.find(Element => Element == aux)){
+
+                    arrayAux.push(aux);
+                    i++;
+                }  
+            }
+        }
+        return arrayAux
+    }
+
+    var segredos = sorteiNumeros(3);
+    console.log(segredos)
+
+    var inputBox= document.querySelector("input");
+    inputBox.focus();
+
+    var buttonBox = document.querySelector("button");
+    buttonBox.onclick = verifica;
+    
+</script>

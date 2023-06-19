@@ -9,18 +9,24 @@ Afim de ampliar os conhecimentos utilizamos o helm para gerenciar a aplicação 
 ``` shell
 #Criamos um chart Helm chamado teste-aluno
 helm create teste-aluno
+
 #Examinamos se o chart esta bem formado
 helm lint teste-aluno
+
 #fazer o release da aplicação
 helm install teste-aluno [local_aplicação]
+
 #fazer alteração do helm
 helm upgrade -f values.yaml teste-aluno .
 helm upgrade -f [arquivo_values] teste-aluno [local_aplicação]
+
 #para vê um historico dos comandos
 helm history teste-aluno
+
 #para voltar a versaõ anterior(rollback)
 helm rollback [release] [revisao] [flag]
 helm rollback teste-aluno 1
+
 #Para listar qual URL o servio esta usando
 minikube service list
 ```
