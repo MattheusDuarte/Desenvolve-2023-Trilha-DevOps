@@ -13,3 +13,8 @@ variable "key" {
   description = "key used to connect to the instance"
   default     = "terraform-aws"
 }
+
+variable "Local_IP" {
+  description = "IP Local"
+  default     = "seu IP"
+}
