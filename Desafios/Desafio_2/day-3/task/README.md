@@ -20,7 +20,7 @@ Aluno = <meu-nome>
 Gb    = desenvolve
 ```
 
-Para completar a tarefa, o comando ```terraform plan``` tem que rodar certinho, não vamos conseguir criar realmente os recursos pois não teremos acesso.
+Para completar a tarefa, o comando ```terraform init && terraform plan``` tem que rodar certinho, não vamos conseguir criar realmente os recursos pois não teremos acesso.
 
 
 ## Terraform
