@@ -27,6 +27,9 @@ helm history teste-aluno
 helm rollback [release] [revisao] [flag]
 helm rollback teste-aluno 1
 
+#desinstalar a release
+helm uninstall teste-aluno
+
 #Para listar qual URL o servio esta usando
 minikube service list
 ```
